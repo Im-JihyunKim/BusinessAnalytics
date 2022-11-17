@@ -509,7 +509,7 @@ Trainer.run()
 Epoch [0100/0100 | train_loss: 93.6023 | valid_loss: 1.4745 |: |          | [01:31<00:00,  1.10it/s] 
 ```
 <p align="center">
-    <img src="Results/MLP/Reconstruction_loss.png" width="400">
+    <img src="Anomaly_Detection/Reconstruction_loss.png" width="400">
 </p>
 
 - Train Loss를 시각적으로 확인해보니 Loss가 잘 수렴하며 학습이 이루어진 것 같습니다. 다만 Valid Loss와 Train Loss 간의 차이가 있기에, 검증이 제대로 이루어졌는지에 대한 확인이 필요합니다. 이제 해당 모델을 바탕으로 Anomaly Detecion을 수행해보려합니다.   
