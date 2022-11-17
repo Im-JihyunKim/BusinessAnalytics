@@ -842,7 +842,7 @@ plt.show();
 
 ```python
 model = LSTMAutoEncoder(config).to(config.device)
-model.load_state_dict(torch.load('./LSTM_epoch_100.pt'))
+model.load_state_dict(torch.load(os.path.join(check_path, '/best_model.pt')))
 
 plot_signal(valid_loader, config, title="Normal")
 plot_signal(test_loader, config, title="Abnormal")
@@ -1022,7 +1022,7 @@ F1score : 0.877
 |__F1 Score ($\beta = 1.0$)__| 0.84 | 0.75 | __0.88__ | 
 |__Accuracy Abnormal (%)__| 82.50 | __93.33__ | 80.00 |
 
-- - MLP, LSTM, Conv1D로 각각 AutoEncoder를 구축해본 결과, **Conv1D에서 가장 좋은 성능을 보였으며 MLP, LSTM 순으로 이상치 탐지 성능이 좋음을 확인**하였습니다.
+- MLP, LSTM, Conv1D로 각각 AutoEncoder를 구축해본 결과, **Conv1D에서 가장 좋은 성능을 보였으며 MLP, LSTM 순으로 이상치 탐지 성능이 좋음을 확인**하였습니다.
 
 - 그러나 시계열 데이터 처리에 유용하다고 알려진 LSTM 구조의 모델을 적용하니 오히려 성능 하락을 기록하였습니다. 이로써 **시계열성을 반영할 수 있는 모델 구조를 활용하면 전체적인 성능이 향상될 것**이라는 가설은 증명하기 어려웠습니다.
 
@@ -1265,5 +1265,5 @@ class KLAutoencoder(nn.Module):
 <br/>
 
 # References
-[1] Chandra, A., & Kala, R. (2019, December). Regularised encoder-decoder architecture for anomaly detection in ECG time signals. In 2019 IEEE Conference on Information and Communication Technology (pp. 1-6). IEEE.
+[1] Chandra, A., & Kala, R. (2019, December). Regularised encoder-decoder architecture for anomaly detection in ECG time signals. In 2019 IEEE Conference on Information and Communication Technology (pp. 1-6). IEEE.   
 [2] https://curiousily.com/posts/time-series-anomaly-detection-using-lstm-autoencoder-with-pytorch-in-python/
