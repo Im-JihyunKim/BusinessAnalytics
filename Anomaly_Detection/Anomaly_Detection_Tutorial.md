@@ -292,6 +292,7 @@ class model_config:
     seq_len = 187
     hidden_1 = 500
     hidden_2 = 100
+    hidden_3 = 32
 ```
 - 모델 학습에 필요한 Hyperparameter 목록입니다. 이때 seq_len은 하나의 ECG signal의 데이터가 가지는 point의 개수를 의미하며, hidden_# 은 각각 모델의 MLP 노드의 개수를 의미합니다. 즉, AutoEncoder Bottelneck Layers를 정의하는 부분입니다.
 ```python
@@ -363,7 +364,7 @@ MLPAutoEncoder(
 class train_config:
     lr = 1e-3
     weight_decay = 1e-2
-    epochs = 70
+    epochs = 100
 ```
 - 학습에 필요한 Hyperparameter를 정의하였습니다. **재구축 오차는 MSE Loss를 이용**합니다.
 ```python
@@ -527,7 +528,7 @@ Epoch [0100/0100 | train_loss: 93.6023 | valid_loss: 1.4745 |: |          | [01:
 
 ```python
 model = MLPAutoEncoder(model_config).to(device)
-model.load_state_dict(torch.load('./MLP_AE_epoch_70.pt'))
+model.load_state_dict(torch.load(os.path.join(check_path), '/best_model.pt'))
 ```
 ```python
 def plot_signal(loader, title: str):
@@ -728,6 +729,7 @@ F1score : 0.839
 |`seq_len`|int|187|ECG 데이터의 Sequence Length입니다. 한 파형에 최대 187개가 있으며, 모든 데이터가 187개의 포인트를 가지도록 Zero padding을 수행하였습니다.|
 |`hidden_1`|int|500|MLPAutoEncoder 구축 시 필요한 Hidden Dimension입니다. Enocer의 첫 번째 Layer의 output 차원이 됩니다.|
 |`hidden_2`|int|100|MLPAutoEncoder 구축 시 필요한 Hidden Dimension입니다. Enocer의 두 번째 Layer의 output 차원이 됩니다.|
+|`hidden_3`|int|32|MLPAutoEncoder 구축 시 필요한 Hidden Dimension입니다. Enocer의 세 번째 Layer의 output 차원이 됩니다.|
 |`hidden_dim`|int|20|LSTMAutoEncoder 구축 시 필요한 Hidden Dimension입니다.|
 |`epochs`|int|100|Number of epochs to train|
 |`train_batch_size`|int|64|Input batch size for training|
