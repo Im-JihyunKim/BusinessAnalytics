@@ -1076,11 +1076,11 @@ $$
 
                        
 여기서 $\sigma$는 random permutation을 의미하는 parameter입니다. 이를 바탕으로 Categorical 변수 $x^i$에서 k번째 객체 $x^i_k$는 다음과 같이 구할 수 있습니다.   
-$$\hat{x}^i_k = \frac{\sum_{x_j \in \mathcal{D}_k} \mathbb{1} \begin{Bmatrix} x^i_j = x^i_k \end{Bmatrix} \cdot y_j + ap}{\sum{x_j \in \mathcal{D}_k} \mathbb{1} \begin{Bmatrix} x^i_j = x^i_k \end{Bmatrix} + a}$$
+$$\hat{x}^i_k = \frac{\sum_{x_j \in \mathcal{D}_k} {1} \begin{Bmatrix} x^i_j = x^i_k \end{Bmatrix} \cdot y_j + ap}{\sum{x_j \in \mathcal{D}_k} {1} \begin{Bmatrix} x^i_j = x^i_k \end{Bmatrix} + a}$$
 
-- 먼저 분자와 분모에 공통적으로 들어간 term인 $\sum_{x_j \in \mathcal{D}_k}\mathbb{1}\begin{Bmatrix} x^i_j = x^i_k \end{Bmatirx}$는 무슨 의미일까요? **k번째 관측치 $x_k$ 직전까지의 모든 데이터에 대하여, $x_k$와 동일한 카테고리 값을 가지는 관측치의 개수를 의미**합니다.
+- 먼저 분자와 분모에 공통적으로 들어간 term인 $\sum_{x_j \in \mathcal{D}_k}\{1}\begin{Bmatrix} x^i_j = x^i_k \end{Bmatirx}$는 무슨 의미일까요? **k번째 관측치 $x_k$ 직전까지의 모든 데이터에 대하여, $x_k$와 동일한 카테고리 값을 가지는 관측치의 개수를 의미**합니다.
                          
-- $\sum_{x_j \in \mathcal{D}_k}\mathbb{1}\begin{Bmatrix} x^i_j = x^i_k \end{Bmatirx} \cdot y_j$는, **k번째 관측치 직전까지의 모든 데이터에 대하여, $x_k$와 동일한 카테고리 값을 가지는 관측치의 Target 값**을 의미하겠죠.
+- $\sum_{x_j \in \mathcal{D}_k}\{1}\begin{Bmatrix} x^i_j = x^i_k \end{Bmatirx} \cdot y_j$는, **k번째 관측치 직전까지의 모든 데이터에 대하여, $x_k$와 동일한 카테고리 값을 가지는 관측치의 Target 값**을 의미하겠죠.
 - 이때 **$a$는 Permutation에 대한 Hyperparameter**이고, Ordered Boosting에서도 함께 사용되는 값입니다.
 - p는 **k번째 관측치 직전까지의 모든 데이터에 대하여, 특정 Target이 나타날 선행 확률**을 의미합니다.
 
