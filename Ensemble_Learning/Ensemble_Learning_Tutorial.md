@@ -17,7 +17,7 @@
 우리가 만드는 예측 모델은 미래에 들어오는 새로운 x 데이터에 대한 예측 오차의 기댓값을 줄이는 것을 목표로 하며, 이때 **오차**의 기댓값은 모델의 **Bias(편향)** 와 **Varaince(분산)** 로 분해됩니다.   
 
 <p align="center">
-    <img src="Img/Noise.PNG" width="650"/>
+    <img src="Img/Noise.PNG" width="800"/>
 </p>
 
 물론 오차에는 Bias와 Variance만 있는 것이 아닙니다. Noise라 하여, 데이터 수집 시에 자연 발생적으로 일어나는 불가피한 변동도 있죠. 이전 [Anomaly Detection 튜토리얼](https://github.com/Im-JihyunKim/BusinessAnalytics/blob/main/Anomaly_Detection/Anomaly_Detection_Tutorial.md)에서도 다루었지만, 노이즈는 정확한 추정은 불가능하고, 다만 서로 독립적이고 일정한 분산을 가진다고 임의로 가정하는 값입니다. 그리고 잘 모르니 가우시안 분포를 따른다고 가정하죠.   
@@ -76,7 +76,7 @@ $\color{purple}\bar{F}(x_0)-\hat{F}(x_0)$ 은 $x_0$가 입력되었을 때 모�
 
 이를 통해서 모델을 아래와 같이 총 4가지 경우로 구분할 수 있을 것입니다.
 <p align="center">
-    <img src="Img/Bias_Variance.PNG" width="650"/>
+    <img src="Img/Bias_Variance.PNG" width="800"/>
 </p>
 
 Case 1은 Bias와 Variance가 모두 높은 경우로, 성능이 매우 좋지 않은 Worst Case입니다. **우리가 다루는 대부분의 예측 모델은 Case 2와 Case 3로 구분**할 수 있죠.
@@ -100,7 +100,7 @@ VC Dimension과 Empirical Error의 관계에 대해서는 [Kernel Based Learning
 본 튜토리얼에서 다룰 Ensemble Learning의 방법론은 **<span style="color:darkblue">Bagging**과 **<span style="color:purple">Boosting**이며, 각 방법론은 다음과 같은 특징을 가집니다.   
 
 <p align="center">
-    <img src="Img/bagging_boosting_1.PNG" width="650"/>
+    <img src="Img/bagging_boosting_1.PNG" width="800"/>
 </p>
 
 **<span style="color:darkblue">Bagging (Bootstrap Aggregating)</span>**:   
@@ -118,7 +118,7 @@ VC Dimension과 Empirical Error의 관계에 대해서는 [Kernel Based Learning
 
 
 <p align="center">
-    <img src="Img/bagging_boosting.PNG" width="650"/>
+    <img src="Img/bagging_boosting.PNG" width="800"/>
 </p>
 
 **<span style="color:darkblue">Bagging은 Case 2와 같이 Bias가 낮은 모델들을 이용해서 Variance를 줄여나가는 방식으로 예측 오류를 감소**시키는 방법입니다. 각 개별 모델의 성능은 좋지만, 그 편차가 있다면 이를 줄일 수 있는 방법론이죠.   
@@ -805,7 +805,7 @@ plt.ylabel("$y$", fontsize=12, rotation=0)
 plt.show()
 ```
 <p align="center">
-    <img src="Img/GBM.png" width="650"/>
+    <img src="Img/GBM.png" width="800"/>
 </p>
 
 시각화 결과를 보면, 시점이 1에서 3으로 증가할 수록 Graident Boosting Model의 예측 값이 점점 실제 데이터에 잘 fitting되는 것을 확인할 수 있습니다.
@@ -945,7 +945,7 @@ $$F_{t-1}(x_k)|x_k ≠ F_{t-1}(x)|x$$
 
 만일 9개의 변수가 있다고 가정하자면, 방법론을 아래와 같이 도식화 할 수 있습니다.   
 <p align="center">
-    <img src="Img/ordered_boosting.PNG" width="650"/>
+    <img src="Img/ordered_boosting.PNG" width="800"/>
 </p>
 
 $M_5^{t-1}$은 5번째 데이터까지만을 사용해 만들어낸 모델이고, $M_6^{t-1}$은 6번째 데이터까지만을 사용해 만들어낸 모델이겠죠. <span style="color:crimson">중요한 것은 **<span style="color:crimson">7번째 데이터에 대해 잔차(residual)를 구할 때, $M_7^{t-1}$를 이용하는 것이 아니라, $M_6^{t-1}$를 이용해야 한다는 것**</span>입니다. 왜 그럴까요? **<span style="color:crimson">$M_6^{t-1}$를 만들 때 7번째 데이터, $x_3$은 한 번도 사용된 적이 없죠. 그렇기에 inference 때와 동일한 환경을 조성**할 수 있다는 것입니다. 이를 통해서 Prediction Shift 문제를 해결하고 있습니다.   
@@ -1075,12 +1075,13 @@ x_j : \sigma (j) < \sigma (k)
 $$
 
                        
-여기서 $\sigma$는 random permutation을 의미하는 parameter입니다. 이를 바탕으로 Categorical 변수 $x^i$에서 k번째 객체 $x^i_k$는 다음과 같이 구할 수 있습니다.   
-$$\hat{x}^i_k = \frac{\sum_{x_j \in \mathcal{D}_k} {1} \begin{Bmatrix} x^i_j = x^i_k \end{Bmatrix} \cdot y_j + ap}{\sum{x_j \in \mathcal{D}_k} {1} \begin{Bmatrix} x^i_j = x^i_k \end{Bmatrix} + a}$$
-
-- 먼저 분자와 분모에 공통적으로 들어간 term인 $\sum_{x_j \in \mathcal{D}_k}\{1}\begin{Bmatrix} x^i_j = x^i_k \end{Bmatirx}$는 무슨 의미일까요? **k번째 관측치 $x_k$ 직전까지의 모든 데이터에 대하여, $x_k$와 동일한 카테고리 값을 가지는 관측치의 개수를 의미**합니다.
+여기서 $\sigma$는 random permutation을 의미하는 parameter입니다. 이를 바탕으로 Categorical 변수 $x^i$에서 k번째 객체 $x^i_k$는 다음과 같이 구할 수 있습니다.  
                          
-- $\sum_{x_j \in \mathcal{D}_k}\{1}\begin{Bmatrix} x^i_j = x^i_k \end{Bmatirx} \cdot y_j$는, **k번째 관측치 직전까지의 모든 데이터에 대하여, $x_k$와 동일한 카테고리 값을 가지는 관측치의 Target 값**을 의미하겠죠.
+$$\hat{x}^i_k = \frac{\sum_{x_j \in \mathcal{D}_k} 1 \begin{Bmatrix} x^i_j = x^i_k \end{Bmatrix} \cdot y_j + ap}{\sum_{x_j \in \mathcal{D}_k} 1 \begin{Bmatrix} x^i_j = x^i_k \end{Bmatrix} + a}$$
+
+- 먼저 분자와 분모에 공통적으로 들어간 term인 $\sum_{x_j \in \mathcal{D}_k} \ 1 \begin{Bmatrix} x^i_j = x^i_k \end{Bmatrix}$는 무슨 의미일까요? **k번째 관측치 $x_k$ 직전까지의 모든 데이터에 대하여, $x_k$와 동일한 카테고리 값을 가지는 관측치의 개수를 의미**합니다.
+                         
+- $\sum_{x_j \in \mathcal{D}_k} \ 1 \begin{Bmatrix} x^i_j = x^i_k \end{Bmatrix} \cdot y_j$는, **k번째 관측치 직전까지의 모든 데이터에 대하여, $x_k$와 동일한 카테고리 값을 가지는 관측치의 Target 값**을 의미하겠죠.
 - 이때 **$a$는 Permutation에 대한 Hyperparameter**이고, Ordered Boosting에서도 함께 사용되는 값입니다.
 - p는 **k번째 관측치 직전까지의 모든 데이터에 대하여, 특정 Target이 나타날 선행 확률**을 의미합니다.
 
@@ -1329,7 +1330,7 @@ AUROC: 0.51 (0.05)
 <br/>
 
 -----
-# Appendix
+# Insights
 지금까지는 Bagging과 Boosting 알고리즘의 기본과 함께, 각 기법의 대표 알고리즘의 동작 방식 및 특징을 실험 및 Python code를 통해 알아보았습니다. 그렇다면 **Bagging과 Boosting 중 어떤 것을 사용해야 할까요?**    
 
 일반적으로 **<span style="color:darkblue">Bagging은 단일 모델의 예측 성능이 어느 정도 보장된 상황에서, Overfitting이 문제가 되는 경우 이를 해결하는 방법론으로서 사용**합니다. 반면 **<span style="color:purple">Boosting은 Bias를 줄이며 예측 성능을 높이고자 하는 방법론이기에, Bagging보다는 예측 성능이 더 좋습니다.**   
