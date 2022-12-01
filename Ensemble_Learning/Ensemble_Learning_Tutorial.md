@@ -930,10 +930,10 @@ g_t(x, y) := \frac{\partial L(y,s)}{\partial F_{t-1}(x)}$$
 이에 CaBoost의 저자들은, **<span style="color:crimson">기본적인 Gradient Boosting 계열의 방법론들이 가지는 2가지 문제를 제기**합니다.  
 
 ## Problems of Gradient Boosting 1: <span style="color:crimson">Prediction Shift
-먼저 $h_t$를 추정하는 데 있어, 모든 데이터셋에 대한 기댓값을 최소화 하는 것은 유한한 관측치 개수를 가지는 데이터에서는 불가능한 일입니다. 따라서 아래와 같이 Training Dataset에 대한 평균척 차이로 근사하게 되죠.   
-$$h_t = arg \ \underset{h\in H}{min}\mathbb{E}(-g_t(x, y)-h(x))^2 \approx \frac{1}{n}\sum^{n}_{k=1}(-g_t(x,y)-h(x))^2 \\
-Training \ Dataset: \mathcal{D}=(x_k, y_k)_{k=1,...,n} \\
-where \ x_k=(x^1_k, ..., x^m_k), \quad y_k \in \mathbb{R}$$
+먼저 $h_t$를 추정하는 데 있어, 모든 데이터셋에 대한 기댓값을 최소화 하는 것은 유한한 관측치 개수를 가지는 데이터에서는 불가능한 일입니다. 따라서 아래와 같이 Training Dataset에 대한 평균척 차이로 근사하게 되죠.  
+    
+$$h_t = arg \underset{h \in H}{min}\mathbb{E}(-g_t(x, y)-h(x))^2 \approx \frac{1}{n}\sum^{n}{k=1}(-g_t(x,y)-h(x))^2 \\  Training \ Dataset: \mathcal{D}=(x_k, y_k)_{k=1,...,n} \ where \ x_k=(x^1_k, ..., x^m_k), \quad y_k \in \mathbb{R}$$
+    
 바로 이러한 지점에서, 학습 데이터에서 $x_k$가 주어졌을 때, 지금까지 우리가 만들었던 누적된 Boosting 모형의 값과 Test Example $x$가 주어졌을 때 누적된 Boosting 모형의 값이 다르다는 문제가 발생합니다. 다시 말해, **<span style="color:crimson">train example $x_k$가 주어졌을 때의 gradient와, $x$가 주어졌을 때의 test example에서의 gradient의 conditional distribution이 다른 것**입니다.   
 $$F_{t-1}(x_k)|x_k ≠ F_{t-1}(x)|x$$
 이 두 가지가 같아야 모델링의 정합성이 확보 되는데, 학습 데이터에 대한 누적 함수의 조건부 확률과 검증용 데이터에 대한 조건부 확률이 다른 것이 바로 첫 번째 Issue입니다. 이를 Prediction Shift라 하고, 이렇게 **<span style="color:crimson">편향된 $h_t$를 $F_t$를 만드는 데 사용하면, 결국 $F_t$의 일반화 성능이 문제가 된다는 점을 짚은 것이죠. 실제로 Gradient Boosting 모델은 Overfitting의 문제**를 안고 있습니다.   
@@ -945,7 +945,7 @@ $$F_{t-1}(x_k)|x_k ≠ F_{t-1}(x)|x$$
 
 만일 9개의 변수가 있다고 가정하자면, 방법론을 아래와 같이 도식화 할 수 있습니다.   
 <p align="center">
-    <img src="Img/ordered_boosting.png" width="650"/>
+    <img src="Img/ordered_boosting.PNG" width="650"/>
 </p>
 
 $M_5^{t-1}$은 5번째 데이터까지만을 사용해 만들어낸 모델이고, $M_6^{t-1}$은 6번째 데이터까지만을 사용해 만들어낸 모델이겠죠. <span style="color:crimson">중요한 것은 **<span style="color:crimson">7번째 데이터에 대해 잔차(residual)를 구할 때, $M_7^{t-1}$를 이용하는 것이 아니라, $M_6^{t-1}$를 이용해야 한다는 것**</span>입니다. 왜 그럴까요? **<span style="color:crimson">$M_6^{t-1}$를 만들 때 7번째 데이터, $x_3$은 한 번도 사용된 적이 없죠. 그렇기에 inference 때와 동일한 환경을 조성**할 수 있다는 것입니다. 이를 통해서 Prediction Shift 문제를 해결하고 있습니다.   
@@ -1063,19 +1063,24 @@ $$Property\ 2 \quad Effective\ usage\ of\ all\ training\ data\ for\ calculating\
 
 ## <span style="color:crimson">Solution 2: Ordered Target Statistics
 위와 같은 속성을 만족시키기 위해서, 저자들이 제안한 Solution이 바로 Ordered Target Statistics입니다. 여기서 'Ordered'라 함은, 앞서 언급한 것과 마찬가지로, **<span style="color:crimson">객체를 무작위로 permutation 시킨 후, Artificial Time, 즉 가상의 시간 개념을 부여하기 때문**입니다. 이때 Ordered Boosting과 마찬가지로, **$x_k$에 대한 TS를 계산할 때는 $x_k$의 이전 정보만을 활용**합니다. 그렇다면 TS를 위해 필요한 subset $\mathcal{D_k}$는 아래와 같이 표기되겠죠.
+    
+$$\mathcal{D}_k \subset \mathcal{D} \ \backslash \begin{Bmatrix}
+x_k
+\end{Bmatrix} \ excluding \ x_k$$
+
 $$
-\mathcal{D_k} ⊂ \mathcal{D} \ \backslash \begin{Bmatrix} x_k
-\end{Bmatrix} \\
 \mathcal{D}_k = \begin{Bmatrix}
-x_j:\sigma (j) < \sigma (k)
+x_j : \sigma (j) < \sigma (k)
 \end{Bmatrix}
 $$
 
+                       
 여기서 $\sigma$는 random permutation을 의미하는 parameter입니다. 이를 바탕으로 Categorical 변수 $x^i$에서 k번째 객체 $x^i_k$는 다음과 같이 구할 수 있습니다.   
-$$\hat{x}^i_k = \frac{\sum_{x_j \in \mathcal{D}_k}\mathbb{1}\left\{ x^i_j = x^i_k \right\} \cdot y_j + ap}{\sum_{x_j \in \mathcal{D}_k}\mathbb{1}\left\{ x^i_j = x^i_k \right\} + a}$$
+$$\hat{x}^i_k = \frac{\sum_{x_j \in \mathcal{D}_k} \mathbb{1} \begin{Bmatrix} x^i_j = x^i_k \end{Bmatrix} \cdot y_j + ap}{\sum{x_j \in \mathcal{D}_k} \mathbb{1} \begin{Bmatrix} x^i_j = x^i_k \end{Bmatrix} + a}$$
 
-- 먼저 분자와 분모에 공통적으로 들어간 term인 ${\sum_{x_j \in \mathcal{D}_k}\mathbb{1}\left\{ x^i_j = x^i_k \right\}}$는 무슨 의미일까요? **k번째 관측치 $x_k$ 직전까지의 모든 데이터에 대하여, $x_k$와 동일한 카테고리 값을 가지는 관측치의 개수를 의미**합니다.
-- ${\sum_{x_j \in \mathcal{D}_k}\mathbb{1}\left\{ x^i_j = x^i_k \right\} \cdot y_j}$는, **k번째 관측치 직전까지의 모든 데이터에 대하여, $x_k$와 동일한 카테고리 값을 가지는 관측치의 Target 값**을 의미하겠죠.
+- 먼저 분자와 분모에 공통적으로 들어간 term인 $\sum_{x_j \in \mathcal{D}_k}\mathbb{1}\begin{Bmatrix} x^i_j = x^i_k \end{Bmatirx}$는 무슨 의미일까요? **k번째 관측치 $x_k$ 직전까지의 모든 데이터에 대하여, $x_k$와 동일한 카테고리 값을 가지는 관측치의 개수를 의미**합니다.
+                         
+- $\sum_{x_j \in \mathcal{D}_k}\mathbb{1}\begin{Bmatrix} x^i_j = x^i_k \end{Bmatirx} \cdot y_j$는, **k번째 관측치 직전까지의 모든 데이터에 대하여, $x_k$와 동일한 카테고리 값을 가지는 관측치의 Target 값**을 의미하겠죠.
 - 이때 **$a$는 Permutation에 대한 Hyperparameter**이고, Ordered Boosting에서도 함께 사용되는 값입니다.
 - p는 **k번째 관측치 직전까지의 모든 데이터에 대하여, 특정 Target이 나타날 선행 확률**을 의미합니다.
 
